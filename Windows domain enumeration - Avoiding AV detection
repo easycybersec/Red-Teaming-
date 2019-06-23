@@ -1,0 +1,53 @@
+Windows Domain Enumeration
+--------------------------
+Modern Anti-Viruses Block most of the classic enumeration tools such as powerview. In this case we could either bypass the AMSI by changing the existing module names, deleting comments, obfuscation etc. or we can try amsi bypass with null strings. But techniques and tactics do not hold up much as the AV signatures are updated periodically. 
+There are two ways we can put up against this, creating your own scripts or by using trusted components. We will stick to Microsoft Trusted Components to enumerate the Domain. To proceed further we will need to firstly import microsoft trusted binaries and scripts. 
+
+These are : 
+Microsoft.ActiveDirectory.Management.dll
+Import-ActiveDirectory.ps1
+from https://github.com/samratashok/ADModule credits to Nishanth of Pentester Academy. 
+
+These are imported as follows:
+
+powershell -nop -ExecutionPolicy bypass 
+import module .\Microsoft.ActiveDirectory.Management.dll
+import module .\Import-ActiveDirectory.ps1
+
+Going Further: 
+In an active directory we always have to enumerate the following thoroughly:
+1. Domain - DC's, name, forest, SID, Policy(password, Kerberos ticket) 
+2. Users - User details(properties, user description etc), Privileged users
+3. other Objects - (groups, group members)
+4. Shares - read/write shares, interesting files etc. 
+5. Domain Trusts - transitive, One-way, two-way etc
+6. GPO - group policies, OU's 
+7. ACL - Access Control Lists 
+
+Enumerating ACL's 
+------------------
+What to mainly look for ?
+Look for what permission you have for a partcular object in a domain. 
+
+What are objects of the domain ? 
+Files and directories on NTFS volumes
+Registry keys (but not values)
+Network shares
+Printers
+Services
+Active Directory objects (ou, groups  etc.)
+Processes
+
+What are the permissions like ?
+Read, write, full control, set dacl etc. 
+ 
+Command:
+
+1) Gets the acl permissions for the current user for the current folder:
+Get-ACL
+
+2) Gets the acl permissions for the current user for remote folder 
+Get-Acl -path \\DomainController\C$ 
+
+
+to be continued ......
