@@ -1,0 +1,1 @@
+1. Do not manually try to decode, replace values, re-encode content. Always use progamming languages such as python, perl to do the job.
