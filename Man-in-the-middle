@@ -1,0 +1,67 @@
+Man-in-the Middle Common Techniques
+-----------------------------------
+1. Application Proxy
+2. Socks5 Proxy 
+3. DNS Spoofing 
+4. ARP Spoofing 
+
+1. Application Proxy 
+---------------------
+The approach though complex, if implemented it could be very effective during red teaming. Usage of such proxies may not be very feasible because applications such as web browsers have to be configured to use this proxy. 
+
+Command line tricks:
+1. Starting browsers with an already set proxy as an CLI argument. 
+Chromium:
+--proxy-server="socks5://myproxy:8080"
+2. Intercepting application traffic running from command line:
+linux: $export http_proxy=http://127.0.0.1:8080
+
+Advantages:Even TLS/SSL encrypted traffic can be decrypted by making the application use our SSL certificate. 
+Disadvantages: Pretty complex to implement, might require GUI access to victim in few cases.
+
+2. Socks5 Proxy
+---------------
+This proxy could allow sniffing of network layer protocol itself; this would also include application layer protocols. This could be configured on a victim PC or a victim network device (switch,router) etc. 
+
+Command line tricks:
+Linux : 
+$export http_proxy=http://127.0.0.1:8080
+Windows : 
+netsh winhttp set proxy <proxy>:<port>
+Cisco Router: 
+route-map PBR permit 5
+match ip address 101
+set ip next-hop 74.63.23.120
+
+Advantages:Easier and faster to configure 
+Disadvantages:Difficult to sniff encrypted traffic and might require administrator/root level privileges 
+
+3. DNS Spoofing 
+----------------
+If you have control over the victims preferred DNS server or if you have compromised any device inline of victim’s network connection, you can spoof the DNS requests and redirect victim to location of your choice. 
+
+Command line tricks:
+Linux:
+Modify entries in /etc/resolv.conf or /etc/hosts 
+Widows:
+Netsh
+interface ip set dns "Local Area Connection" static 192.168.1.1
+
+Advantages: Very effective and reliable
+Disadvantages: Does not reveal original traffic, can be mainly used for stealing passwords. If 2fa etc. is present then it could increase complexity. 
+
+4. ARP Spoofing
+---------------
+If you are present in the same local network segment as the victim you can spoof the ARP Requests to eventually spoof DNS, WINS etc. request and you can also view the victims unencrypted traffic communications. 
+
+Command line Tools: 
+ARP Spoof
+Bettercap 
+Responder 
+
+Advantages: Easiest to pull off 
+Disadvantages: Encrypted traffic cannot be viewed directly, does not work outside the LAN as it depends on network layer 2 for this attack. 
+
+
+
+
